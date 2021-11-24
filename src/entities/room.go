@@ -1,5 +1,11 @@
 package entities
 
+const (
+	NormalDungeon = 10
+	//EpicDungeon = 20
+	//InfiniteMaze = 100
+)
+
 type Room struct {
 	Type string
 }

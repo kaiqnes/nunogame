@@ -11,21 +11,24 @@ import (
 
 func main() {
 	clearConsole()
+
+	// MOCK Main Menu
 	intro()
+	game := entities.NewGame(2, entities.NormalDungeon)
 
-	game := entities.NewGame(2, 10)
-
+	// Get a player - DONE
 	for index := 0; index < len(game.Players); {
-		var (
-			choice int
-		)
-
 		// LOG
 		fmt.Printf("PLAYERS: %v\n", game.Players)
 		fmt.Printf("Mão: %v\n", game.Players[index].Hand.Cards)
 		fmt.Printf("Descarte: %v\n", game.DiscardedDoors)
 		fmt.Printf("Deck: %v\n", game.Doors)
 		fmt.Println()
+
+		preCombatAction()
+
+		// KICK THE DOOR
+		game.KickTheDoor(&game.Players[index])
 
 		// OPEN DOOR
 		drawnCard, err := drawCard(game)
@@ -40,8 +43,7 @@ func main() {
 		fmt.Println("Você gostaria de guardar ou descartar a carta?")
 		fmt.Println("1 - Guardar")
 		fmt.Println("2 - Descartar")
-		scanPlayerChoice(&choice)
-		switch choice {
+		switch scanChoice() {
 		case 1:
 			game.Players[index].Hand.KeepCard(drawnCard, &game.DiscardedDoors)
 		case 2:
@@ -64,11 +66,21 @@ func main() {
 	fmt.Println(game.Players)
 }
 
-func scanPlayerChoice(choice *int) {
+func preCombatAction() {
+	// TODO: PRE COMBAT ACTION
+	takeAction()
+}
+
+func takeAction() {
+	// TODO: TAKE ACTION
+}
+
+func scanChoice() (choice int8) {
 	if _, err := fmt.Scanln(&choice); err != nil {
 		fmt.Println(err)
-		exit()
+		choice = -1
 	}
+	return choice
 }
 
 func drawCard(game *entities.Game) (entities.Card, error) {
